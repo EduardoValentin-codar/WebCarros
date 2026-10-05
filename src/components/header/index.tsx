@@ -1,0 +1,40 @@
+import { FiLogIn, FiUser } from "react-icons/fi"
+import logoImg from "../../assets/logo.svg"
+import { Link } from "react-router"
+
+
+
+export function Header(){
+
+    const signed = true
+    const louadingAuth = false
+
+    return(
+        <div className="w-full flex items-center justify-center h-16 bg-white drop-shadow mb-4">
+            <header className="flex w-full max-w-7xl items-center justify-between px-4 mx-auto" >
+                <Link to= "/" >
+                <img src={logoImg} alt="Logo do site" />
+                </Link>
+
+             {!louadingAuth && signed && (
+                    <Link to="/dashboard">
+                        <div className="border-2 rounded-full p-1">
+                            <FiUser size={24} color="#000" />
+
+                     </div>
+                    </Link>
+             ) }
+                {!louadingAuth && !signed && (
+                    <div className="border-2 rounded-full p-2" >
+                        <Link to="/login">
+                            <FiLogIn size={24} color="#000" />
+                        </Link>
+                        
+                    </div>
+                   
+                )}
+            </header>
+
+        </div>
+    )
+}
