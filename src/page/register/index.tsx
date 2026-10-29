@@ -1,7 +1,12 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import logoImg from '../../assets/logo.svg'
 import { Container } from '../../components/container'
 import { Input } from '../../components/input'
+import {auth} from '../../service/firebase'
+import { createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth'
+import { useEffect, useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
+
 
 import {useForm} from 'react-hook-form'
 import {z} from 'zod'
@@ -17,13 +22,43 @@ type FormData = z.infer<typeof schema>
 
 export function Register() {
 
+  const {handleInfoUser} = useContext(AuthContext)
+  const navigete = useNavigate()
+
 const {register, handleSubmit, formState: {errors}} = useForm<FormData>({
   resolver: zodResolver(schema),
   mode: "onChange"
 })
 
-function onSubmit(data: FormData){
-  console.log(data)
+useEffect(()=>{
+  async function handleLogout(){
+    await signOut(auth)
+  }
+  handleLogout()
+},[])
+
+
+async function onSubmit(data: FormData){
+ createUserWithEmailAndPassword(auth, data.email, data.password)
+ .then(async(user) => {
+  await updateProfile(user.user, {
+    displayName: data.name
+  })
+
+  handleInfoUser({
+    name: data.name,
+    email: data.email,
+    uid: user.user.uid
+  })
+  console.log("Cadastrado com sucesso!!!")
+   navigete("/dashboard", {replace: true})
+
+ })
+
+ .catch((error)=>{
+  console.log("Erro em registrar usuario")
+  console.log(error)
+ })
 
 }
 
@@ -81,7 +116,7 @@ function onSubmit(data: FormData){
 
 
        <button type='submit' className='bg-zinc-900 w-full rounded-md text-white font-medium h-10 cursor-pointer'>
-        Acessar
+    Cadastrar
        </button>
            </form>
 

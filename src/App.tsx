@@ -6,6 +6,7 @@ import { Register } from "./page/register";
 import { Dashboard } from "./page/dashboard";
 import { Layout } from "./components/Layout";
 import { New } from "./page/dashboard/new";
+import { Private } from "./routes/Private";
 
 
 
@@ -26,13 +27,13 @@ const router = createBrowserRouter ([
       },
       {
         path: "/dashboard",
-        element: <Dashboard/>
+        element: <Private><Dashboard /></Private> 
 
       },
      
       {
         path: "/dashboard/new",
-        element: <New/>
+        element: <Private><New/></Private>
       }
 
 

@@ -1,7 +1,11 @@
+import { Container } from "../../components/container"
+import { DashboardHeader } from "../../components/painelHeader.tsx"
+
 export function Dashboard(){
+
     return(
-        <div>
-            <h1>oi</h1>
-        </div>
+        <Container>
+           <DashboardHeader/>
+        </Container>
     )
 }
